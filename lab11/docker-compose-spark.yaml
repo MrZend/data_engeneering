@@ -1,0 +1,18 @@
+version: "3"
+
+services:
+  jupyter-spark:
+    image: jupyter/pyspark-notebook
+    container_name: jupyter-spark
+    ports:
+      - "8889:8888"
+      - "4040:4040"
+    environment:
+      - JUPYTER_ENABLE_LAB=yes
+      - SPARK_MASTER_URL=spark://spark-master:7077
+      - SPARK_OPTS=--packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.0
+    volumes:
+      - "./spark-notebooks:/home/jovyan/work:rw"
+      - "./airflow/dags:/home/jovyan/work/dags:rw"
+    command: start-notebook.sh --NotebookApp.token=''
+
